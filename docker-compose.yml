@@ -1,6 +1,5 @@
-version: '3.8'
-
 services:
+  # Serviço do Backend Laravel (PHP-FPM)
   backend:
     build:
       context: ./backend
@@ -20,6 +19,7 @@ services:
       APP_KEY: ${APP_KEY}
       JWT_SECRET: ${JWT_SECRET}
 
+  # Serviço do Servidor Web Nginx
   nginx:
     build:
       context: ./backend
@@ -32,6 +32,7 @@ services:
     depends_on:
       - backend
 
+  # Serviço do Banco de Dados MySQL
   db:
     image: mysql:8.0
     container_name: clickbeard_db
@@ -44,6 +45,22 @@ services:
       MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
+
+  # Serviço do Frontend React
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    container_name: clickbeard_frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      VITE_API_BASE_URL: http://localhost:8000/api
+    depends_on:
+      - nginx
 
 volumes:
   db_data:
