@@ -5,9 +5,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.backend
-    container_name: clickbeard_backend
-    ports:
-      - "8000:80"
+    container_name: clickbeard_php_fpm
     volumes:
       - ./backend:/var/www/html
     depends_on:
@@ -21,6 +19,18 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       APP_KEY: ${APP_KEY}
       JWT_SECRET: ${JWT_SECRET}
+
+  nginx:
+    build:
+      context: ./backend
+      dockerfile: docker/nginx/Dockerfile.nginx
+    container_name: clickbeard_nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./backend:/var/www/html
+    depends_on:
+      - backend
 
   db:
     image: mysql:8.0
