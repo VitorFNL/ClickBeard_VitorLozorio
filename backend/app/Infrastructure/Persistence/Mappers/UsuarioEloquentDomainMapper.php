@@ -4,19 +4,20 @@ namespace App\Infrastructure\Persistence\Mappers;
 
 use App\Domain\Entities\Usuario;
 use App\Models\EloquentUsuario;
+use DateTime;
 
 class UsuarioEloquentDomainMapper
 {
     public static function toDomain(EloquentUsuario $usuario): Usuario
     {
         return new Usuario(
-            $usuario->id,
             $usuario->nome,
             $usuario->email,
             $usuario->senha,
             $usuario->admin,
-            $usuario->data_criacao,
-            $usuario->data_atualizacao
+            $usuario->id,
+            new DateTime($usuario->data_criacao),
+            new DateTime($usuario->data_atualizacao)
         );
     }
 
@@ -31,7 +32,7 @@ class UsuarioEloquentDomainMapper
 
         $eloquentUser->nome = $domainUser->nome;
         $eloquentUser->email = $domainUser->email;
-        $eloquentUser->senha = $domainUser->senha;
+        $eloquentUser->senha = $domainUser->senhaHash;
         $eloquentUser->admin = $domainUser->admin;
 
         if ($domainUser->dataCriacao) {

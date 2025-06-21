@@ -4,6 +4,7 @@ namespace App\UseCases\RegistrarUsuario;
 
 use App\Domain\Entities\Usuario;
 use App\Domain\Repositories\UsuarioRepositoryInterface;
+use Hash;
 
 class RegistrarUsuario implements RegistrarUsuarioInterface
 {
@@ -17,7 +18,7 @@ class RegistrarUsuario implements RegistrarUsuarioInterface
             usuarioId: null,
             nome: $input->nome,
             email: $input->email,
-            senha: $input->senha,
+            senhaHash: Hash::make($input->senha),
             admin: $input->admin
         );
 
