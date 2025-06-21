@@ -2,30 +2,24 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class RegistrarUsuarioRequest extends FormRequest
+class RegistrarUsuarioRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
+    public static function validate(array $input)
     {
-        return true;
-    }
+        if((!isset($input['nome']) || !$input['nome']) || (!isset($input['email']) || !$input['email']) || (!isset($input['senha']) || !$input['senha'])) {
+            return false;
+        }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
-    public function rules(): array
-    {
-        return [
-            'nome' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:usuarios,email'],
-            'senha' => ['required', 'string', 'min:8'],
-            'admin' => ['sometimes', 'boolean'],
-        ];
+        if((strlen($input['nome']) > 250 || strlen($input['email']) > 250 || strlen($input['senha']) < 8)) {
+            return false;
+        }
+
+        $email_valido = filter_var($input['email'], FILTER_VALIDATE_EMAIL);
+
+        if (!$email_valido) {
+            return false;
+        }
+
+        return true;
     }
 }
