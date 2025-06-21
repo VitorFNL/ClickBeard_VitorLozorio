@@ -4,7 +4,7 @@ namespace App\Infrastructure\Persistence;
 
 use App\Domain\Entities\Usuario;
 use App\Domain\Repositories\UsuarioRepositoryInterface;
-use App\Infrastructure\Persistence\Mappers\UsuarioEloquentDomainMapper;
+use App\Infrastructure\Persistence\Mappers\UsuarioMapper;
 use App\Models\EloquentUsuario;
 use Hash;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +19,7 @@ class EloquentUsuarioRepository implements UsuarioRepositoryInterface
             return null;
         }
 
-        $usuario = UsuarioEloquentDomainMapper::toDomain($eloquentUsuario);
+        $usuario = UsuarioMapper::EloquentToDomain($eloquentUsuario);
 
         return $usuario;
     }
@@ -34,7 +34,7 @@ class EloquentUsuarioRepository implements UsuarioRepositoryInterface
             return null;
         }
 
-        $usuario = UsuarioEloquentDomainMapper::toDomain($eloquentUsuario);
+        $usuario = UsuarioMapper::EloquentToDomain($eloquentUsuario);
 
         return $usuario;
     }
@@ -53,7 +53,7 @@ class EloquentUsuarioRepository implements UsuarioRepositoryInterface
             return null;
         }
 
-        $usuario = UsuarioEloquentDomainMapper::toDomain($eloquentUsuario);
+        $usuario = UsuarioMapper::EloquentToDomain($eloquentUsuario);
 
         return $usuario;
     }
@@ -63,10 +63,10 @@ class EloquentUsuarioRepository implements UsuarioRepositoryInterface
         $eloquentUser = $usuario->usuarioId ? EloquentUsuario::find($usuario->usuarioId) : new EloquentUsuario();
 
 
-        $eloquentUser = UsuarioEloquentDomainMapper::toEloquent($usuario, $eloquentUser);
+        $eloquentUser = UsuarioMapper::DomainToEloquent($usuario, $eloquentUser);
 
         $eloquentUser->save();
 
-        return UsuarioEloquentDomainMapper::toDomain($eloquentUser);
+        return UsuarioMapper::EloquentToDomain($eloquentUser);
     }
 }

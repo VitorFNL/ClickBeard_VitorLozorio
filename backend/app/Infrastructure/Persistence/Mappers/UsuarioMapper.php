@@ -6,9 +6,9 @@ use App\Domain\Entities\Usuario;
 use App\Models\EloquentUsuario;
 use DateTime;
 
-class UsuarioEloquentDomainMapper
+class UsuarioMapper
 {
-    public static function toDomain(EloquentUsuario $usuario): Usuario
+    public static function EloquentToDomain(EloquentUsuario $usuario): Usuario
     {
         return new Usuario(
             $usuario->nome,
@@ -21,7 +21,7 @@ class UsuarioEloquentDomainMapper
         );
     }
 
-    public static function toEloquent(Usuario $domainUser, ?EloquentUsuario $eloquentUser = null): EloquentUsuario
+    public static function DomainToEloquent(Usuario $domainUser, ?EloquentUsuario $eloquentUser = null): EloquentUsuario
     {
         $eloquentUser = $eloquentUser ?? new EloquentUsuario();
 
@@ -43,5 +43,18 @@ class UsuarioEloquentDomainMapper
         }
 
         return $eloquentUser;
+    }
+
+    public static function fromJwtPayload(\stdClass $payloadUserData): Usuario
+    {
+        return new Usuario(
+            usuarioId: $payloadUserData->id,
+            nome: $payloadUserData->name,
+            email: $payloadUserData->email,
+            senhaHash: '',
+            admin: (bool) $payloadUserData->admin,
+            dataCriacao: null,
+            dataAtualizacao: null
+        );
     }
 }
