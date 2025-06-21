@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\UseCases\Login\Login;
+use App\UseCases\Login\LoginInterface;
 use App\UseCases\RegistrarUsuario\RegistrarUsuario;
 use App\UseCases\RegistrarUsuario\RegistrarUsuarioInterface;
 use Illuminate\Support\ServiceProvider;
@@ -14,5 +16,7 @@ class UseCaseServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(RegistrarUsuarioInterface::class, RegistrarUsuario::class);
+
+        $this->app->bind(LoginInterface::class, Login::class);
     }
 }

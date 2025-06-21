@@ -6,6 +6,7 @@ use App\Domain\Entities\Usuario;
 use App\Domain\Repositories\UsuarioRepositoryInterface;
 use App\Infrastructure\Persistence\Mappers\UsuarioEloquentDomainMapper;
 use App\Models\EloquentUsuario;
+use Hash;
 use Illuminate\Support\Facades\Auth;
 
 class EloquentUsuarioRepository implements UsuarioRepositoryInterface
@@ -40,13 +41,17 @@ class EloquentUsuarioRepository implements UsuarioRepositoryInterface
 
     public function autenticar(string $email, string $senha): ?Usuario
     {
-        $autenticado = Auth::attempt(["email"=> $email, "password"=> $senha]);
+        $eloquentUsuario = EloquentUsuario::query()
+                                        ->where("email", $email)
+                                        ->first();
 
-        if (!$autenticado) {
+        if (!$eloquentUsuario) {
             return null;
         }
 
-        $eloquentUsuario = Auth::user();
+        if (!Hash::check($senha, $eloquentUsuario->senha)) {
+            return null;
+        }
 
         $usuario = UsuarioEloquentDomainMapper::toDomain($eloquentUsuario);
 
