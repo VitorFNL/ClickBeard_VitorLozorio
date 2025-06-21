@@ -16,16 +16,12 @@ class RegistrarUsuarioController extends Controller
     public function __invoke(Request $request)
     {
         try {
-            $input = $request->all();
-
-            $input_valido = RegistrarUsuarioRequest::validate($input);
-
-            if (!$input_valido) {
-                return response()->json([
-                    'error'=> 'Dados inválidos',
-                    ],400);
-            }
-
+            $input = $request->validate([
+                'nome' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:usuarios',
+                'senha' => 'required|string|min:8',
+                'admin' => 'sometimes|boolean',
+            ]);
 
             $response = $this->registrarUsuario->execute(new RegistrarUsuarioInput(
                 $input['nome'],
