@@ -20,6 +20,10 @@ class RegistrarUsuarioRequest
             return false;
         }
 
+        if(isset($input['admin']) && gettype($input['admin']) !== 'boolean') {
+            return false;
+        }
+
         return true;
     }
 }
