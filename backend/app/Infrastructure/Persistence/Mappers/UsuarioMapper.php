@@ -15,7 +15,7 @@ class UsuarioMapper
             $usuario->email,
             $usuario->senha,
             $usuario->admin,
-            $usuario->id,
+            $usuario->usuario_id,
             new DateTime($usuario->data_criacao),
             new DateTime($usuario->data_atualizacao)
         );
