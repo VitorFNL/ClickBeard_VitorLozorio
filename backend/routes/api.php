@@ -6,9 +6,10 @@ use App\Http\Controllers\ListaAgendamentosController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\RegistrarUsuarioController;
+use App\Http\Controllers\VinculaEspecialidadesBarbeiroController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/registrar', RegistrarUsuarioController::class);
+Route::put('/registrar', RegistrarUsuarioController::class);
 Route::post('/login', LoginController::class);
 
 Route::middleware('auth')->group(function () {
@@ -16,8 +17,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/agendamentos', ListaAgendamentosController::class);
     
     Route::middleware('admin')->group(function () {
-        Route::post('/cadastrarBarbeiro', CadastraBarbeiroController::class);
+        Route::put('/cadastrarBarbeiro', CadastraBarbeiroController::class);
 
-        Route::post('/cadastrarEspecialidade', CadastraEspecialidadeController::class);
+        Route::put('/cadastrarEspecialidade', CadastraEspecialidadeController::class);
+
+        Route::put('/vincularEspecialidadesBarbeiro', VinculaEspecialidadesBarbeiroController::class);
     });
 });

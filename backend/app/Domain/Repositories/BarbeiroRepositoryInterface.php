@@ -16,4 +16,5 @@ interface BarbeiroRepositoryInterface
      */
     public function findAll(): array;
     public function salvar(Barbeiro $barbeiro): Barbeiro;
+    public function vincularEspecialidades(int $barbeiroId, array $especialidadesIds): Barbeiro;
 }

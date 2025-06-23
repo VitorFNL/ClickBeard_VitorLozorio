@@ -12,6 +12,8 @@ use App\UseCases\Login\Login;
 use App\UseCases\Login\LoginInterface;
 use App\UseCases\RegistrarUsuario\RegistrarUsuario;
 use App\UseCases\RegistrarUsuario\RegistrarUsuarioInterface;
+use App\UseCases\VinculaEspecialidadesBarbeiro\VinculaEspecialidadesBarbeiro;
+use App\UseCases\VinculaEspecialidadesBarbeiro\VinculaEspecialidadesBarbeiroInterface;
 use Illuminate\Support\ServiceProvider;
 
 class UseCaseServiceProvider extends ServiceProvider
@@ -30,5 +32,7 @@ class UseCaseServiceProvider extends ServiceProvider
         $this->app->bind(CadastraBarbeiroInterface::class, CadastraBarbeiro::class);
 
         $this->app->bind(CadastraEspecialidadeInterface::class, CadastraEspecialidade::class);
+
+        $this->app->bind(VinculaEspecialidadesBarbeiroInterface::class, VinculaEspecialidadesBarbeiro::class);
     }
 }

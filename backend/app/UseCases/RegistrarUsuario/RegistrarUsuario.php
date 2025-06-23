@@ -4,7 +4,7 @@ namespace App\UseCases\RegistrarUsuario;
 
 use App\Domain\Entities\Usuario;
 use App\Domain\Repositories\UsuarioRepositoryInterface;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 
 class RegistrarUsuario implements RegistrarUsuarioInterface
 {

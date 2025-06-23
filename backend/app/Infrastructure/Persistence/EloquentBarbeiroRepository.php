@@ -5,6 +5,7 @@ namespace App\Infrastructure\Persistence;
 use App\Domain\Entities\Barbeiro;
 use App\Domain\Repositories\BarbeiroRepositoryInterface;
 use App\Infrastructure\Persistence\Mappers\BarbeiroMapper;
+use App\Infrastructure\Persistence\Mappers\EspecialidadeMapper;
 use App\Models\EloquentBarbeiro;
 
 class EloquentBarbeiroRepository implements BarbeiroRepositoryInterface
@@ -63,5 +64,25 @@ class EloquentBarbeiroRepository implements BarbeiroRepositoryInterface
         $eloquentBarbeiro->save();
 
         return BarbeiroMapper::EloquentToDomain($eloquentBarbeiro);
+    }    public function vincularEspecialidades(int $barbeiroId, array $especialidadesIds): Barbeiro
+    {
+        $barbeiro = EloquentBarbeiro::find($barbeiroId);
+
+        if (!$barbeiro) {
+            throw new \Exception("Barbeiro não encontrado");
+        }
+
+        $barbeiro->especialidades()->sync($especialidadesIds);
+
+        if(!$barbeiro->relationLoaded('especialidades')) {
+            $barbeiro->load('especialidades');
+
+        }
+        
+        $especialidades = $barbeiro->especialidades->map(function ($especialidade) {
+            return EspecialidadeMapper::EloquentToDomain($especialidade);
+        })->toArray();
+
+        return BarbeiroMapper::EloquentToDomain($barbeiro, $especialidades);
     }
 }

@@ -3,13 +3,20 @@
 namespace App\Infrastructure\Persistence\Mappers;
 
 use App\Domain\Entities\Barbeiro;
+use App\Domain\Entities\Especialidade;
 use App\Models\EloquentBarbeiro;
-use Date;
 use DateTime;
 
 class BarbeiroMapper
 {
-    public static function EloquentToDomain(EloquentBarbeiro $barbeiro): Barbeiro
+    /**
+     * Converte um objeto EloquentBarbeiro para um objeto Barbeiro do domínio.
+     *
+     * @param EloquentBarbeiro $barbeiro
+     * @param Especialidade[]|null $especialidades
+     * @return Barbeiro
+     */
+    public static function EloquentToDomain(EloquentBarbeiro $barbeiro, ?array $especialidades = null): Barbeiro
     {
         return new Barbeiro(
             $barbeiro->nome,
@@ -18,7 +25,8 @@ class BarbeiroMapper
             $barbeiro->ativo,
             $barbeiro->barbeiro_id,
             new DateTime($barbeiro->data_criacao),
-            new DateTime($barbeiro->data_atualizacao)
+            new DateTime($barbeiro->data_atualizacao),
+            $especialidades
         );
     }
 
