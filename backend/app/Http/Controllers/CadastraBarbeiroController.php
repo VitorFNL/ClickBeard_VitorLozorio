@@ -17,7 +17,7 @@ class CadastraBarbeiroController extends Controller
     public function __invoke(Request $request)
     {
         try {
-            $request->validate([
+            $input = $request->validate([
             'nome' => 'required|string|max:255',
             'data_nascimento' => 'required|date_format:Y-m-d',
             'data_contratacao' => 'required|date_format:Y-m-d',
@@ -25,9 +25,9 @@ class CadastraBarbeiroController extends Controller
 
             $response = $this->cadastraBarbeiro->execute(
                 new CadastraBarbeiroInput(
-                    $request['nome'],
-                    $request['data_nascimento'],
-                    $request['data_contratacao']
+                    $input['nome'],
+                    $input['data_nascimento'],
+                    $input['data_contratacao']
                 )
             );
 

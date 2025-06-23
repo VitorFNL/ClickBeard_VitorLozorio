@@ -58,6 +58,8 @@ class EloquentBarbeiroRepository implements BarbeiroRepositoryInterface
 
         $eloquentBarbeiro = BarbeiroMapper::DomainToEloquent($barbeiro, $eloquentBarbeiro);
 
+        $eloquentBarbeiro->data_atualizacao = now();
+
         $eloquentBarbeiro->save();
 
         return BarbeiroMapper::EloquentToDomain($eloquentBarbeiro);

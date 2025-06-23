@@ -107,6 +107,8 @@ class EloquentAgendamentoRepository implements AgendamentoRepositoryInterface
             throw new \Exception("Agendamento não encontrado");
         }
 
+        $eloquentAgendamento->data_atualizacao = now();
+
         $eloquentAgendamento->save();
 
         return $this->convertEloquentToDomain($eloquentAgendamento);

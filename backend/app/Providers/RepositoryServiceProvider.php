@@ -4,9 +4,11 @@ namespace App\Providers;
 
 use App\Domain\Repositories\AgendamentoRepositoryInterface;
 use App\Domain\Repositories\BarbeiroRepositoryInterface;
+use App\Domain\Repositories\EspecialidadeRepositoryInterface;
 use App\Domain\Repositories\UsuarioRepositoryInterface;
 use App\Infrastructure\Persistence\EloquentAgendamentoRepository;
 use App\Infrastructure\Persistence\EloquentBarbeiroRepository;
+use App\Infrastructure\Persistence\EloquentEspecialidadeRepository;
 use App\Infrastructure\Persistence\EloquentUsuarioRepository;
 use Illuminate\Support\ServiceProvider;
 
@@ -22,5 +24,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(AgendamentoRepositoryInterface::class, EloquentAgendamentoRepository::class);
 
         $this->app->bind(BarbeiroRepositoryInterface::class, EloquentBarbeiroRepository::class);
+
+        $this->app->bind(EspecialidadeRepositoryInterface::class, EloquentEspecialidadeRepository::class);
     }
 }

@@ -64,6 +64,8 @@ class EloquentUsuarioRepository implements UsuarioRepositoryInterface
 
         $eloquentUser = UsuarioMapper::DomainToEloquent($usuario, $eloquentUser);
 
+        $eloquentUser->data_atualizacao = now();
+
         $eloquentUser->save();
 
         return UsuarioMapper::EloquentToDomain($eloquentUser);
