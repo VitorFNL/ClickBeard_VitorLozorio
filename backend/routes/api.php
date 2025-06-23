@@ -15,6 +15,8 @@ Route::post('/login', LoginController::class);
 Route::middleware('auth')->group(function () {
     Route::post('/logout', LogoutController::class);
     Route::post('/agendamentos', ListaAgendamentosController::class);
+
+    Route::get('/barbeiros', \App\Http\Controllers\ListarBarbeirosController::class);
     
     Route::middleware('admin')->group(function () {
         Route::put('/cadastrarBarbeiro', CadastraBarbeiroController::class);
@@ -22,5 +24,6 @@ Route::middleware('auth')->group(function () {
         Route::put('/cadastrarEspecialidade', CadastraEspecialidadeController::class);
 
         Route::put('/vincularEspecialidadesBarbeiro', VinculaEspecialidadesBarbeiroController::class);
+
     });
 });

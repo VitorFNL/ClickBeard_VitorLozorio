@@ -85,4 +85,25 @@ class EloquentBarbeiroRepository implements BarbeiroRepositoryInterface
 
         return BarbeiroMapper::EloquentToDomain($barbeiro, $especialidades);
     }
+
+    public function findDisponiveis(int $especialidadeId, string $data, string $hora): array
+    {
+        $barbeiros = EloquentBarbeiro::whereHas('especialidades', function ($query) use ($especialidadeId) {
+            $query->where('barbeiros_especialidades.especialidade_id', $especialidadeId);
+        })
+        ->whereDoesntHave('agendamentos', function ($query) use ($data, $hora) {
+            $query->where('data_agendamento', $data)
+                  ->where('hora_inicio', '<=', $hora)
+                  ->where('hora_fim', '>=', $hora);
+        })
+        ->get();
+
+        if ($barbeiros->isEmpty()) {
+            return [];
+        }
+
+        return $barbeiros->map(function ($barbeiro) {
+            return BarbeiroMapper::EloquentToDomain($barbeiro);
+        })->toArray();
+    }
 }

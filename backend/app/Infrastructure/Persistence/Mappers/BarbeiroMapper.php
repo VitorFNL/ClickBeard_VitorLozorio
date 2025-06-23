@@ -26,7 +26,7 @@ class BarbeiroMapper
             $barbeiro->barbeiro_id,
             new DateTime($barbeiro->data_criacao),
             new DateTime($barbeiro->data_atualizacao),
-            $especialidades
+            $especialidades ?? []
         );
     }
 
