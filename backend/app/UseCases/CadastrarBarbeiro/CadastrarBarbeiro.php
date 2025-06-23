@@ -1,17 +1,17 @@
 <?php
 
-namespace App\UseCases\CadastraBarbeiro;
+namespace App\UseCases\CadastrarBarbeiro;
 
 use App\Domain\Entities\Barbeiro;
 use App\Domain\Repositories\BarbeiroRepositoryInterface;
 
-class CadastraBarbeiro implements CadastraBarbeiroInterface
+class CadastrarBarbeiro implements CadastrarBarbeiroInterface
 {
     public function __construct(
         private BarbeiroRepositoryInterface $barbeiroRepository
     ) {}
 
-    public function execute(CadastraBarbeiroInput $input): CadastraBarbeiroOutput
+    public function execute(CadastrarBarbeiroInput $input): CadastrarBarbeiroOutput
     {
         $barbeiro = new Barbeiro(
             nome: $input->nome,
@@ -22,7 +22,7 @@ class CadastraBarbeiro implements CadastraBarbeiroInterface
 
         $barbeiro = $this->barbeiroRepository->salvar($barbeiro);
 
-        return new CadastraBarbeiroOutput(
+        return new CadastrarBarbeiroOutput(
             id: $barbeiro->barbeiroId,
             nome: $barbeiro->nome
         );

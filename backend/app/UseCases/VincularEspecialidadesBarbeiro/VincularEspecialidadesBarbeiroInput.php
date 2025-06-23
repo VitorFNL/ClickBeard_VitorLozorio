@@ -1,8 +1,8 @@
 <?php
 
-namespace App\UseCases\VinculaEspecialidadesBarbeiro;
+namespace App\UseCases\VincularEspecialidadesBarbeiro;
 
-class VinculaEspecialidadesBarbeiroInput
+class VincularEspecialidadesBarbeiroInput
 {
     public function __construct(
         public int $barbeiroId,

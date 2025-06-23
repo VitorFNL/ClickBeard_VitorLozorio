@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\UseCases\ListaAgendamentos\ListaAgendamentosInput;
-use App\UseCases\ListaAgendamentos\ListaAgendamentosInterface;
+use App\UseCases\ListarAgendamentos\ListarAgendamentosInput;
+use App\UseCases\ListarAgendamentos\ListarAgendamentosInterface;
 use Illuminate\Http\Request;
 
-class ListaAgendamentosController extends Controller
+class ListarAgendamentosController extends Controller
 {
     
     public function __construct(
-        private ListaAgendamentosInterface $listaAgendamentos
+        private ListarAgendamentosInterface $listarAgendamentos
     ) {}
 
     public function __invoke(Request $request)
@@ -29,7 +29,7 @@ class ListaAgendamentosController extends Controller
                 $data = new \DateTime($input['data']);
             }
 
-            $response = $this->listaAgendamentos->execute(new ListaAgendamentosInput(
+            $response = $this->listarAgendamentos->execute(new ListarAgendamentosInput(
                 $input['user']->usuarioId,
                 $input['user']->admin,
                 $data,

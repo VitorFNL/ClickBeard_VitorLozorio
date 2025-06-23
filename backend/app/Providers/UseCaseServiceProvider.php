@@ -4,10 +4,10 @@ namespace App\Providers;
 
 use App\UseCases\CadastraBarbeiro\CadastraBarbeiro;
 use App\UseCases\CadastraBarbeiro\CadastraBarbeiroInterface;
-use App\UseCases\CadastraEspecialidade\CadastraEspecialidade;
-use App\UseCases\CadastraEspecialidade\CadastraEspecialidadeInterface;
-use App\UseCases\ListaAgendamentos\ListaAgendamentos;
-use App\UseCases\ListaAgendamentos\ListaAgendamentosInterface;
+use App\UseCases\CadastraEspecialidade\CadastrarEspecialidade;
+use App\UseCases\CadastraEspecialidade\CadastrarEspecialidadeInterface;
+use App\UseCases\ListaAgendamentos\ListarAgendamentos;
+use App\UseCases\ListaAgendamentos\ListarAgendamentosInterface;
 use App\UseCases\ListarBarbeiros\ListarBarbeiros;
 use App\UseCases\ListarBarbeiros\ListarBarbeirosInterface;
 use App\UseCases\Login\Login;
@@ -29,13 +29,13 @@ class UseCaseServiceProvider extends ServiceProvider
 
         $this->app->bind(LoginInterface::class, Login::class);
 
-        $this->app->bind(ListaAgendamentosInterface::class, ListaAgendamentos::class);
+        $this->app->bind(ListarAgendamentosInterface::class, ListarAgendamentos::class);
 
-        $this->app->bind(CadastraBarbeiroInterface::class, CadastraBarbeiro::class);
+        $this->app->bind(CadastrarBarbeiroInterface::class, CadastrarBarbeiro::class);
 
-        $this->app->bind(CadastraEspecialidadeInterface::class, CadastraEspecialidade::class);
+        $this->app->bind(CadastrarEspecialidadeInterface::class, CadastrarEspecialidade::class);
 
-        $this->app->bind(VinculaEspecialidadesBarbeiroInterface::class, VinculaEspecialidadesBarbeiro::class);
+        $this->app->bind(VincularEspecialidadesBarbeiroInterface::class, VincularEspecialidadesBarbeiro::class);
 
         $this->app->bind(ListarBarbeirosInterface::class, ListarBarbeiros::class);
     }

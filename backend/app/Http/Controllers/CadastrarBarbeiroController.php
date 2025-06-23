@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\UseCases\CadastraBarbeiro\CadastraBarbeiroInput;
-use App\UseCases\CadastraBarbeiro\CadastraBarbeiroInterface;
+use App\UseCases\CadastrarBarbeiro\CadastrarBarbeiroInput;
+use App\UseCases\CadastrarBarbeiro\CadastrarBarbeiroInterface;
 use Illuminate\Http\Request;
 
-class CadastraBarbeiroController extends Controller
+class CadastrarBarbeiroController extends Controller
 {
 
     public function __construct(
-        private CadastraBarbeiroInterface $cadastraBarbeiro
+        private CadastrarBarbeiroInterface $cadastrarBarbeiro
     ) {}
 
     public function __invoke(Request $request)
@@ -23,8 +23,8 @@ class CadastraBarbeiroController extends Controller
             'data_contratacao' => 'required|date_format:Y-m-d',
             ]);
 
-            $response = $this->cadastraBarbeiro->execute(
-                new CadastraBarbeiroInput(
+            $response = $this->cadastrarBarbeiro->execute(
+                new CadastrarBarbeiroInput(
                     $input['nome'],
                     $input['data_nascimento'],
                     $input['data_contratacao']

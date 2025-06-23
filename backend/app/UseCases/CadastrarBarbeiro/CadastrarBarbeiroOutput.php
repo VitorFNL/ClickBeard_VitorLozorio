@@ -1,8 +1,8 @@
 <?php
 
-namespace App\UseCases\CadastraBarbeiro;
+namespace App\UseCases\CadastrarBarbeiro;
 
-class CadastraBarbeiroOutput
+class CadastrarBarbeiroOutput
 {
     public function __construct(
         public int $id,

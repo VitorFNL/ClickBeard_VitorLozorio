@@ -1,17 +1,17 @@
 <?php
 
-namespace App\UseCases\CadastraEspecialidade;
+namespace App\UseCases\CadastrarEspecialidade;
 
 use App\Domain\Entities\Especialidade;
 use App\Domain\Repositories\EspecialidadeRepositoryInterface;
 
-class CadastraEspecialidade implements CadastraEspecialidadeInterface
+class CadastrarEspecialidade implements CadastrarEspecialidadeInterface
 {
     public function __construct(
         private EspecialidadeRepositoryInterface $especialidadeRepository
     ) {}
 
-    public function execute(CadastraEspecialidadeInput $input): CadastraEspecialidadeOutput
+    public function execute(CadastrarEspecialidadeInput $input): CadastrarEspecialidadeOutput
     {
         $especialidade = new Especialidade(
             descricao: $input->descricao
@@ -19,7 +19,7 @@ class CadastraEspecialidade implements CadastraEspecialidadeInterface
 
         $especialidade = $this->especialidadeRepository->salvar($especialidade);
 
-        return new CadastraEspecialidadeOutput(
+        return new CadastrarEspecialidadeOutput(
             id: $especialidade->especialidadeId,
             descricao: $especialidade->descricao
         );

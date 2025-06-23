@@ -1,10 +1,10 @@
 <?php
 
-namespace App\UseCases\ListaAgendamentos;
+namespace App\UseCases\ListarAgendamentos;
 
 use DateTime;
 
-class ListaAgendamentosInput
+class ListarAgendamentosInput
 {
     public function __construct(
         public int $usuarioId,

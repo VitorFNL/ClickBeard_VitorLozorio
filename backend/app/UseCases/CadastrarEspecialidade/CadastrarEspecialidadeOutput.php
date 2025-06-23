@@ -1,8 +1,8 @@
 <?php
 
-namespace App\UseCases\CadastraEspecialidade;
+namespace App\UseCases\CadastrarEspecialidade;
 
-class CadastraEspecialidadeOutput
+class CadastrarEspecialidadeOutput
 {
     public function __construct(
         public int $id,

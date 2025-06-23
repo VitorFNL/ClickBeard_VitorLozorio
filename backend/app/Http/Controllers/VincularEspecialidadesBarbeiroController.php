@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\UseCases\VinculaEspecialidadesBarbeiro\VinculaEspecialidadesBarbeiroInput;
-use App\UseCases\VinculaEspecialidadesBarbeiro\VinculaEspecialidadesBarbeiroInterface;
+use App\UseCases\VincularEspecialidadesBarbeiro\VincularEspecialidadesBarbeiroInput;
+use App\UseCases\VincularEspecialidadesBarbeiro\VincularEspecialidadesBarbeiroInterface;
 use Illuminate\Http\Request;
 
-class VinculaEspecialidadesBarbeiroController extends Controller
+class VincularEspecialidadesBarbeiroController extends Controller
 {
     
     public function __construct(
-        private VinculaEspecialidadesBarbeiroInterface $vinculaEspecialidadesBarbeiro
+        private VincularEspecialidadesBarbeiroInterface $vincularEspecialidadesBarbeiro
     ) {}
 
     public function __invoke(Request $request)
@@ -23,8 +23,8 @@ class VinculaEspecialidadesBarbeiroController extends Controller
                 'especialidades.*' => 'exists:especialidades,especialidade_id',
             ]);
 
-            $response = $this->vinculaEspecialidadesBarbeiro->execute(
-                new VinculaEspecialidadesBarbeiroInput(
+            $response = $this->vincularEspecialidadesBarbeiro->execute(
+                new VincularEspecialidadesBarbeiroInput(
                     $input['barbeiro_id'],
                     $input['especialidades']
                 )

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\UseCases\CadastraEspecialidade;
+namespace App\UseCases\CadastrarEspecialidade;
 
-class CadastraEspecialidadeInput
+class CadastrarEspecialidadeInput
 {
     public function __construct(
         public string $descricao

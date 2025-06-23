@@ -3,24 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\UseCases\CadastraEspecialidade\CadastraEspecialidadeInput;
-use App\UseCases\CadastraEspecialidade\CadastraEspecialidadeInterface;
+use App\UseCases\CadastrarEspecialidade\CadastrarEspecialidadeInput;
+use App\UseCases\CadastrarEspecialidade\CadastrarEspecialidadeInterface;
 use Illuminate\Http\Request;
 
-class CadastraEspecialidadeController extends Controller
+class CadastrarEspecialidadeController extends Controller
 {
 
     public function __construct(
-        private CadastraEspecialidadeInterface $cadastraEspecialidade
-    ) {}    public function __invoke(Request $request)
+        private CadastrarEspecialidadeInterface $cadastrarEspecialidade
+    ) {}
+
+    public function __invoke(Request $request)
     {
         try {
             $input = $request->validate([
                 'descricao' => 'required|string|max:255|unique:especialidades,descricao',
             ]);
 
-            $response = $this->cadastraEspecialidade->execute(
-                new CadastraEspecialidadeInput(
+            $response = $this->cadastrarEspecialidade->execute(
+                new CadastrarEspecialidadeInput(
                     $input['descricao']
                 )
             );

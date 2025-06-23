@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\CadastraBarbeiroController;
-use App\Http\Controllers\CadastraEspecialidadeController;
-use App\Http\Controllers\ListaAgendamentosController;
+use App\Http\Controllers\CadastrarBarbeiroController;
+use App\Http\Controllers\CadastrarEspecialidadeController;
+use App\Http\Controllers\ListarAgendamentosController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\RegistrarUsuarioController;
-use App\Http\Controllers\VinculaEspecialidadesBarbeiroController;
+use App\Http\Controllers\VincularEspecialidadesBarbeiroController;
 use Illuminate\Support\Facades\Route;
 
 Route::put('/registrar', RegistrarUsuarioController::class);
@@ -14,16 +14,16 @@ Route::post('/login', LoginController::class);
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', LogoutController::class);
-    Route::post('/agendamentos', ListaAgendamentosController::class);
+    Route::post('/agendamentos', ListarAgendamentosController::class);
 
     Route::get('/barbeiros', \App\Http\Controllers\ListarBarbeirosController::class);
     
     Route::middleware('admin')->group(function () {
-        Route::put('/cadastrarBarbeiro', CadastraBarbeiroController::class);
+        Route::put('/cadastrarBarbeiro', CadastrarBarbeiroController::class);
 
-        Route::put('/cadastrarEspecialidade', CadastraEspecialidadeController::class);
+        Route::put('/cadastrarEspecialidade', CadastrarEspecialidadeController::class);
 
-        Route::put('/vincularEspecialidadesBarbeiro', VinculaEspecialidadesBarbeiroController::class);
+        Route::put('/vincularEspecialidadesBarbeiro', VincularEspecialidadesBarbeiroController::class);
 
     });
 });

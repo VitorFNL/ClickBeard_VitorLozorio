@@ -1,8 +1,8 @@
 <?php
 
-namespace App\UseCases\ListaAgendamentos;
+namespace App\UseCases\ListarAgendamentos;
 
-class ListaAgendamentosOutput
+class ListarAgendamentosOutput
 {
     public function __construct(
         public array $agendamentos

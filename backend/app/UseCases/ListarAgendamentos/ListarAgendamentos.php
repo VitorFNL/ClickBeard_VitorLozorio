@@ -1,33 +1,33 @@
 <?php
 
-namespace App\UseCases\ListaAgendamentos;
+namespace App\UseCases\ListarAgendamentos;
 
 use App\Domain\Repositories\AgendamentoRepositoryInterface;
 
-class ListaAgendamentos implements ListaAgendamentosInterface
+class ListarAgendamentos implements ListarAgendamentosInterface
 {
     public function __construct(
         private AgendamentoRepositoryInterface $agendamentoRepository
     ) {}
 
-    public function execute(ListaAgendamentosInput $input): ListaAgendamentosOutput
+    public function execute(ListarAgendamentosInput $input): ListarAgendamentosOutput
     {
         // Filtrar por data se fornecida
         if($input->data) {
             $agendamentos = $this->agendamentoRepository->findByDate($input->data);
-            return new ListaAgendamentosOutput($agendamentos);
+            return new ListarAgendamentosOutput($agendamentos);
         }
 
         // Filtrar por barbeiro se fornecido
         if($input->barbeiroId) {
             $agendamentos = $this->agendamentoRepository->findByBarbeiro($input->barbeiroId);
-            return new ListaAgendamentosOutput($agendamentos);
+            return new ListarAgendamentosOutput($agendamentos);
         }
 
         // Filtrar por especialidade se fornecida
         if($input->especialidadeId) {
             $agendamentos = $this->agendamentoRepository->findByEspecialidade($input->especialidadeId);
-            return new ListaAgendamentosOutput($agendamentos);
+            return new ListarAgendamentosOutput($agendamentos);
         }
 
         if(!$input->admin) {
@@ -36,6 +36,6 @@ class ListaAgendamentos implements ListaAgendamentosInterface
 
         $agendamentos = $this->agendamentoRepository->findAll();
 
-        return new ListaAgendamentosOutput($agendamentos);
+        return new ListarAgendamentosOutput($agendamentos);
     }
 }

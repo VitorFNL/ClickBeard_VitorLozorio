@@ -1,10 +1,10 @@
 <?php
 
-namespace App\UseCases\VinculaEspecialidadesBarbeiro;
+namespace App\UseCases\VincularEspecialidadesBarbeiro;
 
 use App\Domain\Entities\Especialidade;
 
-class VinculaEspecialidadesBarbeiroOutput
+class VincularEspecialidadesBarbeiroOutput
 {
     /**
      *
