@@ -2,14 +2,14 @@
 
 namespace App\UseCases\ListaAgendamentos;
 
-use Date;
+use DateTime;
 
 class ListaAgendamentosInput
 {
     public function __construct(
         public int $usuarioId,
         public bool $admin,
-        public ?Date $data = null,
+        public ?DateTime $data = null,
         public ?int $barbeiroId = null,
         public ?int $especialidadeId = null
     ) {}

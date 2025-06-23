@@ -24,10 +24,15 @@ class ListaAgendamentosController extends Controller
 
             $input['user'] = $request->user;
 
+            $data = null;
+            if (isset($input['data'])) {
+                $data = new \DateTime($input['data']);
+            }
+
             $response = $this->listaAgendamentos->execute(new ListaAgendamentosInput(
                 $input['user']->usuarioId,
                 $input['user']->admin,
-                $input['data'] ?? null,
+                $data,
                 $input['barbeiro'] ?? null,
                 $input['especialidade'] ?? null
             ));

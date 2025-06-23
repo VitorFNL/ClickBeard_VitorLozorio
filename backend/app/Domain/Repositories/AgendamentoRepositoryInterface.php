@@ -3,14 +3,14 @@
 namespace App\Domain\Repositories;
 
 use App\Domain\Entities\Agendamento;
-use Date;
+use DateTime;
 
 interface AgendamentoRepositoryInterface
 {
     /**
      * @return Agendamento[]
      */
-    public function findByDate(Date $data_agendamento): array;
+    public function findByDate(DateTime $data_agendamento): array;
     /**
      * @return Agendamento[]
      */

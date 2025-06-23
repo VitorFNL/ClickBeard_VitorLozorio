@@ -10,7 +10,7 @@ class EspecialidadeMapper
     public static function EloquentToDomain(EloquentEspecialidade $especialidade): Especialidade
     {
         return new Especialidade(
-            $especialidade->nome,
+            $especialidade->descricao,
             $especialidade->especialidade_id,
             $especialidade->data_criacao,
             $especialidade->data_atualizacao

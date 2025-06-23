@@ -29,8 +29,6 @@ class EloquentAgendamento extends Model
 
     protected $casts = [
         'data_agendamento' => 'date',
-        'hora_inicio' => 'time',
-        'hora_fim' => 'time',
         'data_criacao' => 'datetime',
         'data_atualizacao' => 'datetime',
     ];

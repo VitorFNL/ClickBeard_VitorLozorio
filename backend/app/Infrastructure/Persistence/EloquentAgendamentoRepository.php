@@ -9,14 +9,14 @@ use App\Infrastructure\Persistence\Mappers\BarbeiroMapper;
 use App\Infrastructure\Persistence\Mappers\EspecialidadeMapper;
 use App\Infrastructure\Persistence\Mappers\UsuarioMapper;
 use App\Models\EloquentAgendamento;
-use Date;
+use DateTime;
 
 class EloquentAgendamentoRepository implements AgendamentoRepositoryInterface
 {
     /**
      * @return Agendamento[]
      */
-    public function findByDate(Date $data_agendamento): array
+    public function findByDate(DateTime $data_agendamento): array
     {
         $eloquentAgendamentos = EloquentAgendamento::with(['usuario', 'barbeiro.especialidades', 'especialidade'])
                                                 ->where('data_agendamento', '>=', $data_agendamento)
@@ -25,32 +25,7 @@ class EloquentAgendamentoRepository implements AgendamentoRepositoryInterface
                                                 ->get();
 
         return array_map(function ($eloquentAgendamento) {
-
-            $usuario = UsuarioMapper::EloquentToDomain($eloquentAgendamento->usuario);
-            $especialidade = EspecialidadeMapper::EloquentToDomain($eloquentAgendamento->especialidade);
-
-            $barbeiro = null;
-
-            if ($eloquentAgendamento->barbeiro) {
-                $barbeiro = BarbeiroMapper::EloquentToDomain($eloquentAgendamento->barbeiro);
-
-                if ($eloquentAgendamento->barbeiro->relationLoaded('especialidades')) {
-                    $barbeiroEspecialidades = $eloquentAgendamento->barbeiro->especialidades->map(function ($eloquentEspecialidade) {
-                        return EspecialidadeMapper::EloquentToDomain($eloquentEspecialidade);
-                    })->all();
-
-                    $barbeiro->especialidades = $barbeiroEspecialidades;
-                }
-            }
-
-
-            return AgendamentoMapper::toDomain(
-                $eloquentAgendamento,
-                $usuario,
-                $barbeiro,
-                $especialidade
-            );
-            
+            return $this->convertEloquentToDomain($eloquentAgendamento);
         }, $eloquentAgendamentos->all());
     }
 
@@ -66,29 +41,7 @@ class EloquentAgendamentoRepository implements AgendamentoRepositoryInterface
                                         ->get();
         
         return array_map(function ($agendamento) {
-            $usuario = UsuarioMapper::EloquentToDomain($agendamento->usuario);
-            $especialidade = EspecialidadeMapper::EloquentToDomain($agendamento->especialidade);
-
-            $barbeiro = null;
-
-            if ($agendamento->barbeiro) {
-                $barbeiro = BarbeiroMapper::EloquentToDomain($agendamento->barbeiro);
-
-                if ($agendamento->barbeiro->relationLoaded('especialidades')) {
-                    $barbeiroEspecialidades = $agendamento->barbeiro->especialidades->map(function ($eloquentEspecialidade) {
-                        return EspecialidadeMapper::EloquentToDomain($eloquentEspecialidade);
-                    })->all();
-
-                    $barbeiro->especialidades = $barbeiroEspecialidades;
-                }
-            }
-
-            return AgendamentoMapper::toDomain(
-                $agendamento,
-                $usuario,
-                $barbeiro,
-                $especialidade
-            );
+            return $this->convertEloquentToDomain($agendamento);
         }, $agendamentos->all());
     }
 
@@ -104,29 +57,7 @@ class EloquentAgendamentoRepository implements AgendamentoRepositoryInterface
                                         ->get();
 
         return array_map(function ($agendamento) {
-            $usuario = UsuarioMapper::EloquentToDomain($agendamento->usuario);
-            $especialidade = EspecialidadeMapper::EloquentToDomain($agendamento->especialidade);
-
-            $barbeiro = null;
-
-            if ($agendamento->barbeiro) {
-                $barbeiro = BarbeiroMapper::EloquentToDomain($agendamento->barbeiro);
-
-                if ($agendamento->barbeiro->relationLoaded('especialidades')) {
-                    $barbeiroEspecialidades = $agendamento->barbeiro->especialidades->map(function ($eloquentEspecialidade) {
-                        return EspecialidadeMapper::EloquentToDomain($eloquentEspecialidade);
-                    })->all();
-
-                    $barbeiro->especialidades = $barbeiroEspecialidades;
-                }
-            }
-
-            return AgendamentoMapper::toDomain(
-                $agendamento,
-                $usuario,
-                $barbeiro,
-                $especialidade
-            );
+            return $this->convertEloquentToDomain($agendamento);
         }, $agendamentos->all());
     }
 
@@ -141,115 +72,73 @@ class EloquentAgendamentoRepository implements AgendamentoRepositoryInterface
                                         ->get();
 
         return array_map(function ($agendamento) {
-            $usuario = UsuarioMapper::EloquentToDomain($agendamento->usuario);
-            $especialidade = EspecialidadeMapper::EloquentToDomain($agendamento->especialidade);
-
-            $barbeiro = null;
-
-            if ($agendamento->barbeiro) {
-                $barbeiro = BarbeiroMapper::EloquentToDomain($agendamento->barbeiro);
-
-                if ($agendamento->barbeiro->relationLoaded('especialidades')) {
-                    $barbeiroEspecialidades = $agendamento->barbeiro->especialidades->map(function ($eloquentEspecialidade) {
-                        return EspecialidadeMapper::EloquentToDomain($eloquentEspecialidade);
-                    })->all();
-
-                    $barbeiro->especialidades = $barbeiroEspecialidades;
-                }
-            }
-
-            return AgendamentoMapper::toDomain(
-                $agendamento,
-                $usuario,
-                $barbeiro,
-                $especialidade
-            );
+            return $this->convertEloquentToDomain($agendamento);
         }, $agendamentos->all());
     }
     public function findById(int $agendamentoId): ?Agendamento
     {
         $eloquentAgendamento = EloquentAgendamento::with(['usuario', 'barbeiro.especialidades', 'especialidade'])
                                                 ->where('agendamento_id', $agendamentoId)
-                                                ->get();
+                                                ->first();
 
-        if ($eloquentAgendamento->isEmpty()) {
+        if (!$eloquentAgendamento) {
             return null;
         }
 
-        $agendamento = array_map(function ($agendamento) {
-            $usuario = UsuarioMapper::EloquentToDomain($agendamento->usuario);
-            $especialidade = EspecialidadeMapper::EloquentToDomain($agendamento->especialidade);
-
-            $barbeiro = null;
-
-            if ($agendamento->barbeiro) {
-                $barbeiro = BarbeiroMapper::EloquentToDomain($agendamento->barbeiro);
-
-                if ($agendamento->barbeiro->relationLoaded('especialidades')) {
-                    $barbeiroEspecialidades = $agendamento->barbeiro->especialidades->map(function ($eloquentEspecialidade) {
-                        return EspecialidadeMapper::EloquentToDomain($eloquentEspecialidade);
-                    })->all();
-
-                    $barbeiro->especialidades = $barbeiroEspecialidades;
-                }
-            }
-
-            return AgendamentoMapper::toDomain(
-                $agendamento,
-                $usuario,
-                $barbeiro,
-                $especialidade
-            );
-        }, $eloquentAgendamento->all());
-
-        return $agendamento[0];
+        return $this->convertEloquentToDomain($eloquentAgendamento);
     }
     public function salvar(Agendamento $agendamento): Agendamento
     {
         if(!$agendamento->agendamentoId) {
             $eloquentAgendamento = AgendamentoMapper::domainToEloquent($agendamento);
-
             $eloquentAgendamento->save();
+            
+            $eloquentAgendamentoRecarregado = EloquentAgendamento::with(['usuario', 'barbeiro.especialidades', 'especialidade'])
+                                                                ->find($eloquentAgendamento->agendamento_id);
 
-            // TODO : Criar um mapeamento para converter o eloquent para o domínio
-            return $agendamento;
+            return $this->convertEloquentToDomain($eloquentAgendamentoRecarregado);
         }
         
         $eloquentAgendamento = EloquentAgendamento::with(['usuario', 'barbeiro.especialidades', 'especialidade'])
                                                 ->where('agendamento_id', $agendamento->agendamentoId)
-                                                ->get();
+                                                ->first();
 
+        if (!$eloquentAgendamento) {
+            throw new \Exception("Agendamento não encontrado");
+        }
 
-        $agendamento = $eloquentAgendamento[0];
+        $eloquentAgendamento->save();
 
-        $agendamento->save();
+        return $this->convertEloquentToDomain($eloquentAgendamento);
+    }
 
-        $agendamento = array_map(function ($agendamento) {
-            $usuario = UsuarioMapper::EloquentToDomain($agendamento->usuario);
-            $especialidade = EspecialidadeMapper::EloquentToDomain($agendamento->especialidade);
+    /**
+     * Converte um EloquentAgendamento para uma entidade de domínio Agendamento
+     */
+    private function convertEloquentToDomain($eloquentAgendamento): Agendamento
+    {
+        $usuario = UsuarioMapper::EloquentToDomain($eloquentAgendamento->usuario);
+        $especialidade = EspecialidadeMapper::EloquentToDomain($eloquentAgendamento->especialidade);
 
-            $barbeiro = null;
+        $barbeiro = null;
 
-            if ($agendamento->barbeiro) {
-                $barbeiro = BarbeiroMapper::EloquentToDomain($agendamento->barbeiro);
+        if ($eloquentAgendamento->barbeiro) {
+            $barbeiro = BarbeiroMapper::EloquentToDomain($eloquentAgendamento->barbeiro);
 
-                if ($agendamento->barbeiro->relationLoaded('especialidades')) {
-                    $barbeiroEspecialidades = $agendamento->barbeiro->especialidades->map(function ($eloquentEspecialidade) {
-                        return EspecialidadeMapper::EloquentToDomain($eloquentEspecialidade);
-                    })->all();
+            if ($eloquentAgendamento->barbeiro->relationLoaded('especialidades')) {
+                $barbeiroEspecialidades = $eloquentAgendamento->barbeiro->especialidades->map(function ($eloquentEspecialidade) {
+                    return EspecialidadeMapper::EloquentToDomain($eloquentEspecialidade);
+                })->all();
 
-                    $barbeiro->especialidades = $barbeiroEspecialidades;
-                }
+                $barbeiro->especialidades = $barbeiroEspecialidades;
             }
+        }
 
-            return AgendamentoMapper::toDomain(
-            $agendamento,
+        return AgendamentoMapper::toDomain(
+            $eloquentAgendamento,
             $usuario,
             $barbeiro,
             $especialidade
-            );
-        }, $eloquentAgendamento->all());
-
-        return $agendamento[0];
+        );
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\UseCases\ListaAgendamentos\ListaAgendamentos;
+use App\UseCases\ListaAgendamentos\ListaAgendamentosInterface;
 use App\UseCases\Login\Login;
 use App\UseCases\Login\LoginInterface;
 use App\UseCases\RegistrarUsuario\RegistrarUsuario;
@@ -18,5 +20,9 @@ class UseCaseServiceProvider extends ServiceProvider
         $this->app->bind(RegistrarUsuarioInterface::class, RegistrarUsuario::class);
 
         $this->app->bind(LoginInterface::class, Login::class);
+
+        $this->app->bind(
+            ListaAgendamentosInterface::class, ListaAgendamentos::class
+        );
     }
 }
