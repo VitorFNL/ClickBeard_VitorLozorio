@@ -6,8 +6,7 @@ use App\Domain\Entities\Usuario;
 use App\Domain\Repositories\UsuarioRepositoryInterface;
 use App\Infrastructure\Persistence\Mappers\UsuarioMapper;
 use App\Models\EloquentUsuario;
-use Hash;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class EloquentUsuarioRepository implements UsuarioRepositoryInterface
 {

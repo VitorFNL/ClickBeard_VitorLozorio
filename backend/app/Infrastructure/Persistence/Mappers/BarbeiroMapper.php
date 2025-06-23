@@ -21,4 +21,28 @@ class BarbeiroMapper
             new DateTime($barbeiro->data_atualizacao)
         );
     }
+
+    public static function DomainToEloquent(Barbeiro $domainBarbeiro, ?EloquentBarbeiro $eloquentBarbeiro = null): EloquentBarbeiro
+    {
+        $barbeiro = $eloquentBarbeiro ?? new EloquentBarbeiro();
+
+        if ($domainBarbeiro->barbeiroId !== null) {
+            $barbeiro->barbeiro_id = $domainBarbeiro->barbeiroId;
+        }
+
+        $barbeiro->nome = $domainBarbeiro->nome;
+        $barbeiro->data_nascimento = $domainBarbeiro->dataNascimento->format('Y-m-d');
+        $barbeiro->data_contratacao = $domainBarbeiro->dataContratacao->format('Y-m-d');
+        $barbeiro->ativo = $domainBarbeiro->ativo;
+
+        if ($domainBarbeiro->dataCriacao) {
+            $barbeiro->data_criacao = $domainBarbeiro->dataCriacao->format('Y-m-d H:i:s');
+        }
+
+        if ($domainBarbeiro->dataAtualizacao) {
+            $barbeiro->data_atualizacao = $domainBarbeiro->dataAtualizacao->format('Y-m-d H:i:s');
+        }
+
+        return $barbeiro;
+    }
 }
