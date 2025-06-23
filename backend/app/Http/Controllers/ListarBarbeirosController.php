@@ -16,7 +16,7 @@ class ListarBarbeirosController extends Controller
 
     public function __invoke(Request $request)
     {
-        // try {
+        try {
             $input = $request->validate([
                 'especialidade' => 'sometimes|exists:especialidades,especialidade_id',
                 'data' => 'sometimes|date_format:Y-m-d',
@@ -47,10 +47,10 @@ class ListarBarbeirosController extends Controller
                 'message' => 'Barbeiros listados com sucesso',
                 'barbeiros' => $response->barbeiros
             ], 200);
-        // } catch (\Exception $e) {
-        //     return response()->json([
-        //         'error' => $e->getMessage() ?: 'Erro interno do servidor',
-        //     ], $e->getCode() ?: 500);
-        // }
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage() ?: 'Erro interno do servidor',
+            ], $e->getCode() ?: 500);
+        }
     }
 }
