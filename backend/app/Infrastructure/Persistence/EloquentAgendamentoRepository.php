@@ -67,6 +67,7 @@ class EloquentAgendamentoRepository implements AgendamentoRepositoryInterface
     public function findAll(): array
     {
         $agendamentos = EloquentAgendamento::with(['usuario', 'barbeiro.especialidades', 'especialidade'])
+                                        ->where('data_agendamento', '>=', now()->format('Y-m-d'))
                                         ->orderBy('data_agendamento')
                                         ->orderBy('hora_inicio')
                                         ->get();
