@@ -1,6 +1,6 @@
 # ClickBeard - Backend API
 
-## 📦 Pré-requisitos
+## Pré-requisitos
 
 Antes de começar, certifique-se de ter instalado:
 
@@ -9,11 +9,11 @@ Antes de começar, certifique-se de ter instalado:
 - **MySQL/MariaDB**
 - **Node.js & NPM** (para assets front-end, se necessário)
 
-## ⚙️ Instalação e Configuração
+## Instalação e Configuração
 
 ### 1. Clone o repositório
 ```bash
-git clone <url-do-repositorio>
+git clone https://github.com/VitorFNL/ClickBeard_VitorLozorio
 cd ClickBeard_VitorLozorio/backend
 ```
 
@@ -22,29 +22,8 @@ cd ClickBeard_VitorLozorio/backend
 composer install
 ```
 
-### 3. Configure o arquivo de ambiente
-```bash
-cp .env.example .env
-```
 
-Edite o arquivo `.env` com suas configurações:
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=clickbeard
-DB_USERNAME=seu_usuario
-DB_PASSWORD=sua_senha
-
-JWT_SECRET=sua_chave_jwt_secreta
-```
-
-### 4. Gere a chave da aplicação
-```bash
-php artisan key:generate
-```
-
-### 5. Configure o banco de dados
+### 3. Configure o banco de dados
 
 Execute o script SQL fornecido no projeto:
 ```bash
@@ -56,7 +35,7 @@ Execute as migrações:
 php artisan migrate
 ```
 
-## 🔧 Executando a Aplicação
+## Executando a Aplicação
 
 ### Servidor de Desenvolvimento
 ```bash
@@ -65,7 +44,7 @@ php artisan serve
 
 A API estará disponível em: `http://localhost:8000`
 
-## 📡 Endpoints da API
+## Endpoints da API
 
 ### Autenticação
 - `PUT /api/registrar` - Registrar novo usuário
@@ -96,7 +75,7 @@ Authorization: Bearer SEU_TOKEN_JWT
 Algumas rotas requerem privilégios de administrador (`admin: true` no usuário).
 
 
-## 📝 Exemplos de Uso
+## Exemplos de Uso
 
 ### Registrar Usuário
 ```http
