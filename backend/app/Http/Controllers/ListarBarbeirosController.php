@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Infrastructure\Persistence\Mappers\BarbeiroMapper;
 use App\UseCases\ListarBarbeiros\ListarBarbeirosInput;
 use App\UseCases\ListarBarbeiros\ListarBarbeirosInterface;
 use Illuminate\Http\Request;
@@ -41,6 +42,8 @@ class ListarBarbeirosController extends Controller
                 $hora,
                 $input['especialidade'] ?? null,
             ));
+
+            $response->barbeiros = array_map([BarbeiroMapper::class, 'domainToArray'], $response->barbeiros);
 
             return response()->json([
                 'status' => 'success',

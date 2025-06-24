@@ -53,4 +53,21 @@ class BarbeiroMapper
 
         return $barbeiro;
     }
+
+    public static function DomainToArray(Barbeiro $barbeiro): array
+    {
+        return [
+            'id' => $barbeiro->barbeiroId,
+            'nome' => $barbeiro->nome,
+            'data_nascimento' => $barbeiro->dataNascimento->format('Y-m-d'),
+            'data_contratacao' => $barbeiro->dataContratacao->format('Y-m-d'),
+            'ativo' => $barbeiro->ativo,
+            'especialidades' => array_map(function (Especialidade $especialidade) {
+                return [
+                    'id' => $especialidade->especialidadeId,
+                    'nome' => $especialidade->descricao,
+                ];
+            }, $barbeiro->especialidades),
+        ];
+    }
 }
