@@ -7,6 +7,7 @@ use App\Domain\Repositories\BarbeiroRepositoryInterface;
 use App\Infrastructure\Persistence\Mappers\BarbeiroMapper;
 use App\Infrastructure\Persistence\Mappers\EspecialidadeMapper;
 use App\Models\EloquentBarbeiro;
+use DateTimeImmutable;
 
 class EloquentBarbeiroRepository implements BarbeiroRepositoryInterface
 {
@@ -64,7 +65,9 @@ class EloquentBarbeiroRepository implements BarbeiroRepositoryInterface
         $eloquentBarbeiro->save();
 
         return BarbeiroMapper::EloquentToDomain($eloquentBarbeiro);
-    }    public function vincularEspecialidades(int $barbeiroId, array $especialidadesIds): Barbeiro
+    }
+
+    public function vincularEspecialidades(int $barbeiroId, array $especialidadesIds): Barbeiro
     {
         $barbeiro = EloquentBarbeiro::find($barbeiroId);
 
@@ -88,22 +91,39 @@ class EloquentBarbeiroRepository implements BarbeiroRepositoryInterface
 
     public function findDisponiveis(int $especialidadeId, string $data, string $hora): array
     {
-        $barbeiros = EloquentBarbeiro::whereHas('especialidades', function ($query) use ($especialidadeId) {
-            $query->where('barbeiros_especialidades.especialidade_id', $especialidadeId);
-        })
-        ->whereDoesntHave('agendamentos', function ($query) use ($data, $hora) {
-            $query->where('data_agendamento', $data)
-                  ->where('hora_inicio', '<=', $hora)
-                  ->where('hora_fim', '>=', $hora);
-        })
-        ->get();
+        
+        $dataCompletaDoSlotDesejado = new DateTimeImmutable($data . ' ' . $hora);
+        $horaInicioDoSlotDesejado = $dataCompletaDoSlotDesejado;
+        $horaFimDoSlotDesejado = $dataCompletaDoSlotDesejado->modify('+30 minutes');
+
+        $barbeiros = EloquentBarbeiro::with('especialidades')
+            ->whereHas('especialidades', function ($query) use ($especialidadeId) {
+                $query->where('barbeiros_especialidades.especialidade_id', $especialidadeId);
+            })
+            ->whereDoesntHave('agendamentos', function ($query) use ($data, $horaInicioDoSlotDesejado, $horaFimDoSlotDesejado) {
+                $query->where('ativo', true);
+                $query->where('status_agendamento', 'AGENDADO');
+                $query->where('data_agendamento', $data);
+                $query->where('hora_inicio', '<', $horaFimDoSlotDesejado->format('H:i:s'))
+                      ->where('hora_fim', '>', $horaInicioDoSlotDesejado->format('H:i:s'));
+            })
+            ->get();
 
         if ($barbeiros->isEmpty()) {
             return [];
         }
 
-        return $barbeiros->map(function ($barbeiro) {
-            return BarbeiroMapper::EloquentToDomain($barbeiro);
-        })->toArray();
+        return $barbeiros->map(function ($eloquentBarbeiro) {
+            $barbeiro = BarbeiroMapper::EloquentToDomain($eloquentBarbeiro);
+
+            if ($eloquentBarbeiro->relationLoaded('especialidades') && $eloquentBarbeiro->especialidades) {
+                $barbeiroEspecialidades = $eloquentBarbeiro->especialidades->map(function ($eloquentEspecialidade) {
+                    return EspecialidadeMapper::EloquentToDomain($eloquentEspecialidade);
+                })->all();
+
+                $barbeiro->especialidades = $barbeiroEspecialidades;
+            }
+            return $barbeiro;
+        })->all();
     }
 }

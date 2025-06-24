@@ -2,20 +2,22 @@
 
 namespace App\Providers;
 
-use App\UseCases\CadastraBarbeiro\CadastraBarbeiro;
-use App\UseCases\CadastraBarbeiro\CadastraBarbeiroInterface;
-use App\UseCases\CadastraEspecialidade\CadastrarEspecialidade;
-use App\UseCases\CadastraEspecialidade\CadastrarEspecialidadeInterface;
-use App\UseCases\ListaAgendamentos\ListarAgendamentos;
-use App\UseCases\ListaAgendamentos\ListarAgendamentosInterface;
+use App\UseCases\CadastrarAgendamento\CadastrarAgendamento;
+use App\UseCases\CadastrarAgendamento\CadastrarAgendamentoInterface;
+use App\UseCases\CadastrarBarbeiro\CadastrarBarbeiro;
+use App\UseCases\CadastrarBarbeiro\CadastrarBarbeiroInterface;
+use App\UseCases\CadastrarEspecialidade\CadastrarEspecialidade;
+use App\UseCases\CadastrarEspecialidade\CadastrarEspecialidadeInterface;
+use App\UseCases\ListarAgendamentos\ListarAgendamentos;
+use App\UseCases\ListarAgendamentos\ListarAgendamentosInterface;
 use App\UseCases\ListarBarbeiros\ListarBarbeiros;
 use App\UseCases\ListarBarbeiros\ListarBarbeirosInterface;
 use App\UseCases\Login\Login;
 use App\UseCases\Login\LoginInterface;
 use App\UseCases\RegistrarUsuario\RegistrarUsuario;
 use App\UseCases\RegistrarUsuario\RegistrarUsuarioInterface;
-use App\UseCases\VinculaEspecialidadesBarbeiro\VinculaEspecialidadesBarbeiro;
-use App\UseCases\VinculaEspecialidadesBarbeiro\VinculaEspecialidadesBarbeiroInterface;
+use App\UseCases\VincularEspecialidadesBarbeiro\VincularEspecialidadesBarbeiro;
+use App\UseCases\VincularEspecialidadesBarbeiro\VincularEspecialidadesBarbeiroInterface;
 use Illuminate\Support\ServiceProvider;
 
 class UseCaseServiceProvider extends ServiceProvider
@@ -38,5 +40,7 @@ class UseCaseServiceProvider extends ServiceProvider
         $this->app->bind(VincularEspecialidadesBarbeiroInterface::class, VincularEspecialidadesBarbeiro::class);
 
         $this->app->bind(ListarBarbeirosInterface::class, ListarBarbeiros::class);
+
+        $this->app->bind(CadastrarAgendamentoInterface::class,CadastrarAgendamento::class);
     }
 }
