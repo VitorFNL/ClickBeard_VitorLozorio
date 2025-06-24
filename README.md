@@ -38,6 +38,7 @@ Execute o script SQL fornecido no projeto:
 ```bash
 mysql -u seu_usuario -p < ../banco.sql
 ```
+Caso esteja no windows esse comando deverá ser executado no cmd, o mysql também deve estar no path
 
 #### 2.4. Executar migrações
 ```bash
@@ -106,8 +107,9 @@ O frontend estará disponível em: `http://localhost:5173`
 O sistema utiliza JWT (JSON Web Tokens) para autenticação:
 
 1. Faça login em `/api/login`
-2. O token é automaticamente armazenado em cookies
-3. Todas as requisições autenticadas incluem o token automaticamente
+2. O projeto é iniciado com o usuário admin@admin.com | admin123 com permissões de admin
+3. O token é automaticamente armazenado em cookies
+4. Todas as requisições autenticadas incluem o token automaticamente
 
 ### Middleware de Admin
 Algumas rotas requerem privilégios de administrador (`admin: true` no usuário).

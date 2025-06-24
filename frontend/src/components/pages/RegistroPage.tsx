@@ -138,7 +138,7 @@ const RegistroPage: React.FC = () => {  const [formData, setFormData] = useState
                     required
                     value={formData.senha}
                     onChange={handleChange}
-                    placeholder="Mínimo 6 caracteres"
+                    placeholder="Mínimo 8 caracteres"
                     className="pr-10"
                   />
                   <button

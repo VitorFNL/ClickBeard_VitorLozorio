@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -20,6 +22,15 @@ return new class extends Migration
             $table->timestamp("data_criacao")->useCurrent();
             $table->timestamp("data_atualizacao")->nullable()->useCurrent();
         });
+
+        DB::table("usuarios")->insert([
+            "nome" => "Administrador",
+            "email" => "admin@admin.com",
+            "senha" => Hash::make("admin123"),
+            "admin" => true,
+            "data_criacao" => now(),
+            "data_atualizacao" => now(),
+        ]);
         
     }
 
