@@ -14,6 +14,8 @@ use App\UseCases\ListarAgendamentos\ListarAgendamentos;
 use App\UseCases\ListarAgendamentos\ListarAgendamentosInterface;
 use App\UseCases\ListarBarbeiros\ListarBarbeiros;
 use App\UseCases\ListarBarbeiros\ListarBarbeirosInterface;
+use App\UseCases\ListarEspecialidades\ListarEspecialidades;
+use App\UseCases\ListarEspecialidades\ListarEspecialidadesInterface;
 use App\UseCases\Login\Login;
 use App\UseCases\Login\LoginInterface;
 use App\UseCases\RegistrarUsuario\RegistrarUsuario;
@@ -42,6 +44,8 @@ class UseCaseServiceProvider extends ServiceProvider
         $this->app->bind(VincularEspecialidadesBarbeiroInterface::class, VincularEspecialidadesBarbeiro::class);
 
         $this->app->bind(ListarBarbeirosInterface::class, ListarBarbeiros::class);
+
+        $this->app->bind(ListarEspecialidadesInterface::class, ListarEspecialidades::class);
 
         $this->app->bind(CadastrarAgendamentoInterface::class,CadastrarAgendamento::class);
 

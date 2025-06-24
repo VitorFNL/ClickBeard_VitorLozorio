@@ -6,6 +6,7 @@ use App\Http\Controllers\CadastrarEspecialidadeController;
 use App\Http\Controllers\CancelarAgendamentoController;
 use App\Http\Controllers\ListarAgendamentosController;
 use App\Http\Controllers\ListarBarbeirosController;
+use App\Http\Controllers\ListarEspecialidadesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\RegistrarUsuarioController;
@@ -20,6 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/agendamentos', ListarAgendamentosController::class);
 
     Route::get('/barbeiros', ListarBarbeirosController::class);
+    Route::get('/especialidades', ListarEspecialidadesController::class);
 
     Route::put('/agendar', CadastrarAgendamentoController::class);
 

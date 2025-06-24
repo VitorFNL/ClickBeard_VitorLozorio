@@ -30,12 +30,15 @@ class ListarAgendamentos implements ListarAgendamentosInterface
             return new ListarAgendamentosOutput($agendamentos);
         }
 
-        if(!$input->admin) {
-            throw new \Exception("Usuário não autorizado a listar agendamentos.");
+        // Se for admin, pode ver todos os agendamentos
+        if($input->admin) {
+            $agendamentos = $this->agendamentoRepository->findAll();
+            return new ListarAgendamentosOutput($agendamentos);
         }
 
-        $agendamentos = $this->agendamentoRepository->findAll();
+        // Se não for admin, só pode ver seus próprios agendamentos
 
+        $agendamentos = $this->agendamentoRepository->findByUsuario($input->usuarioId);
         return new ListarAgendamentosOutput($agendamentos);
     }
 }
