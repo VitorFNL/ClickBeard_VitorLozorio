@@ -27,9 +27,25 @@ const NovoAgendamentoModal: React.FC<NovoAgendamentoModalProps> = ({
 
   // Dados do agendamento
   const [selectedEspecialidade, setSelectedEspecialidade] = useState<number>(0);
-  const [selectedData, setSelectedData] = useState('');
+  const [selectedData, _setSelectedData] = useState('');
   const [selectedHora, setSelectedHora] = useState('');
   const [selectedBarbeiro, setSelectedBarbeiro] = useState<number>(0);
+
+  const setSelectedData = (data: string) => {
+    const [ano, mes, dia] = data.split('-').map(Number);
+    const dataSelecionada = new Date(ano, mes - 1, dia); // fuso local
+
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+    dataSelecionada.setHours(0, 0, 0, 0);
+
+    if (dataSelecionada < hoje) {
+      setError('Data inválida. Por favor, selecione uma data futura.');
+      return;
+    }
+
+    _setSelectedData(data);
+  };
 
   // Reset do modal
   const resetModal = () => {
