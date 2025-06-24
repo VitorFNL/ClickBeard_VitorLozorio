@@ -22,6 +22,6 @@ class Login implements LoginInterface
 
         $token = $this->jwtService->generateToken($usuario);
 
-        return new LoginOutput($token);
+        return new LoginOutput($token, $usuario);
     }
 }

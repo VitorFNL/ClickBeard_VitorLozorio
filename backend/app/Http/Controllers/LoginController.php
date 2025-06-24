@@ -32,7 +32,8 @@ class LoginController extends Controller
             $jsonResponse = response()->json([
                 'status'=> 'success',
                 'message'=> 'Usuário logado com sucesso',
-                'token'=> $response->token
+                'token'=> $response->token,
+                'usuario' => $response->usuario,
             ], 200);
 
             $jsonResponse->cookie(
