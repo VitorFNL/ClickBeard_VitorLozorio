@@ -8,6 +8,8 @@ use App\UseCases\CadastrarBarbeiro\CadastrarBarbeiro;
 use App\UseCases\CadastrarBarbeiro\CadastrarBarbeiroInterface;
 use App\UseCases\CadastrarEspecialidade\CadastrarEspecialidade;
 use App\UseCases\CadastrarEspecialidade\CadastrarEspecialidadeInterface;
+use App\UseCases\CancelarAgendamento\CancelarAgendamento;
+use App\UseCases\CancelarAgendamento\CancelarAgendamentoInterface;
 use App\UseCases\ListarAgendamentos\ListarAgendamentos;
 use App\UseCases\ListarAgendamentos\ListarAgendamentosInterface;
 use App\UseCases\ListarBarbeiros\ListarBarbeiros;
@@ -42,5 +44,7 @@ class UseCaseServiceProvider extends ServiceProvider
         $this->app->bind(ListarBarbeirosInterface::class, ListarBarbeiros::class);
 
         $this->app->bind(CadastrarAgendamentoInterface::class,CadastrarAgendamento::class);
+
+        $this->app->bind(CancelarAgendamentoInterface::class, CancelarAgendamento::class);
     }
 }

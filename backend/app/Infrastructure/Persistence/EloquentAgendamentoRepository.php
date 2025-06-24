@@ -107,11 +107,17 @@ class EloquentAgendamentoRepository implements AgendamentoRepositoryInterface
             throw new \Exception("Agendamento não encontrado");
         }
 
+        // Atualizar os dados do agendamento existente
+        $eloquentAgendamento = AgendamentoMapper::domainToEloquent($agendamento, $eloquentAgendamento);
         $eloquentAgendamento->data_atualizacao = now();
 
         $eloquentAgendamento->save();
 
-        return $this->convertEloquentToDomain($eloquentAgendamento);
+        // Recarregar com as relações para retornar
+        $eloquentAgendamentoRecarregado = EloquentAgendamento::with(['usuario', 'barbeiro.especialidades', 'especialidade'])
+                                                            ->find($eloquentAgendamento->agendamento_id);
+
+        return $this->convertEloquentToDomain($eloquentAgendamentoRecarregado);
     }
 
     /**
