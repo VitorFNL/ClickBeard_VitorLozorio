@@ -28,12 +28,10 @@ const NovoAgendamentoModal: React.FC<NovoAgendamentoModalProps> = ({
   // Dados do agendamento
   const [selectedEspecialidade, setSelectedEspecialidade] = useState<number>(0);
   const [selectedData, _setSelectedData] = useState('');
-  const [selectedHora, setSelectedHora] = useState('');
-  const [selectedBarbeiro, setSelectedBarbeiro] = useState<number>(0);
-
-  const setSelectedData = (data: string) => {
+  const [selectedHora, _setSelectedHora] = useState('');
+  const [selectedBarbeiro, setSelectedBarbeiro] = useState<number>(0);  const setSelectedData = (data: string) => {
     const [ano, mes, dia] = data.split('-').map(Number);
-    const dataSelecionada = new Date(ano, mes - 1, dia); // fuso local
+    const dataSelecionada = new Date(ano, mes - 1, dia);
 
     const hoje = new Date();
     hoje.setHours(0, 0, 0, 0);
@@ -45,6 +43,49 @@ const NovoAgendamentoModal: React.FC<NovoAgendamentoModalProps> = ({
     }
 
     _setSelectedData(data);
+    
+    // Verificar se o horário atual ainda é válido para a nova data
+    if (selectedHora) {
+      const hoje = new Date();
+      const novaDataSelecionada = new Date(data + 'T00:00:00');
+      
+      // Se a nova data for hoje, verificar se o horário já passou
+      if (novaDataSelecionada.toDateString() === hoje.toDateString()) {
+        const [horas, minutos] = selectedHora.split(':').map(Number);
+        const horarioSelecionado = new Date();
+        horarioSelecionado.setHours(horas, minutos, 0, 0);
+        
+        if (horarioSelecionado <= hoje) {
+          _setSelectedHora('');
+        }
+      }
+    }
+    
+    setError(''); // Limpar erro ao selecionar data válida
+  };
+  const setSelectedHora = (hora: string) => {
+    if (!selectedData) {
+      setError('Por favor, selecione uma data primeiro.');
+      return;
+    }
+
+    const [horas, minutos] = hora.split(':').map(Number);
+    const hoje = new Date();
+    const dataSelecionada = new Date(selectedData + 'T00:00:00');
+    
+    // Se a data selecionada for hoje, verificar se o horário já passou
+    if (dataSelecionada.toDateString() === hoje.toDateString()) {
+      const horaSelecionada = new Date();
+      horaSelecionada.setHours(horas, minutos, 0, 0);
+      
+      if (horaSelecionada <= hoje) {
+        setError('Horário inválido. Por favor, selecione um horário futuro.');
+        return;
+      }
+    }
+
+    _setSelectedHora(hora);
+    setError(''); // Limpar erro ao selecionar horário válido
   };
 
   // Reset do modal
@@ -119,7 +160,6 @@ const NovoAgendamentoModal: React.FC<NovoAgendamentoModalProps> = ({
       setLoading(false);
     }
   };
-
   const podeAvancarStep1 = selectedEspecialidade > 0 && selectedData && selectedHora;
   const podeAvancarStep2 = selectedBarbeiro > 0;
 
@@ -128,6 +168,25 @@ const NovoAgendamentoModal: React.FC<NovoAgendamentoModalProps> = ({
     '11:00', '11:30', '14:00', '14:30', '15:00', '15:30',
     '16:00', '16:30', '17:00', '17:30', '18:00'
   ];
+
+  // Função para verificar se um horário está disponível
+  const isHorarioDisponivel = (horario: string) => {
+    if (!selectedData) return true;
+    
+    const hoje = new Date();
+    const dataSelecionada = new Date(selectedData + 'T00:00:00');
+    
+    // Se a data selecionada for hoje, verificar se o horário já passou
+    if (dataSelecionada.toDateString() === hoje.toDateString()) {
+      const [horas, minutos] = horario.split(':').map(Number);
+      const horarioSelecionado = new Date();
+      horarioSelecionado.setHours(horas, minutos, 0, 0);
+      
+      return horarioSelecionado > hoje;
+    }
+    
+    return true;
+  };
 
   if (!isOpen) return null;
 
@@ -222,27 +281,31 @@ const NovoAgendamentoModal: React.FC<NovoAgendamentoModalProps> = ({
                     onChange={(e) => setSelectedData(e.target.value)}
                     min={new Date().toISOString().split('T')[0]}
                   />
-                </div>
-
-                <div>
+                </div>                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Horário
                   </label>
                   <div className="grid grid-cols-4 gap-2">
-                    {horarios.map(horario => (
-                      <button
-                        key={horario}
-                        type="button"
-                        className={`p-2 text-sm rounded border ${
-                          selectedHora === horario
-                            ? 'bg-blue-600 text-white border-blue-600'
-                            : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
-                        }`}
-                        onClick={() => setSelectedHora(horario)}
-                      >
-                        {horario}
-                      </button>
-                    ))}
+                    {horarios.map(horario => {
+                      const disponivel = isHorarioDisponivel(horario);
+                      return (
+                        <button
+                          key={horario}
+                          type="button"
+                          disabled={!disponivel}
+                          className={`p-2 text-sm rounded border ${
+                            selectedHora === horario
+                              ? 'bg-blue-600 text-white border-blue-600'
+                              : disponivel
+                                ? 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                                : 'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed'
+                          }`}
+                          onClick={() => disponivel && setSelectedHora(horario)}
+                        >
+                          {horario}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
