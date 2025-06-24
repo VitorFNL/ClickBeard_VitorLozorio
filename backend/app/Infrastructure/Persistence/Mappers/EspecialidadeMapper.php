@@ -16,4 +16,14 @@ class EspecialidadeMapper
             $especialidade->data_atualizacao
         );
     }
+
+    public static function domainToArray(Especialidade $especialidade): array
+    {
+        return [
+            'id' => $especialidade->especialidadeId,
+            'descricao' => $especialidade->descricao,
+            'data_criacao' => $especialidade->dataCriacao,
+            'data_atualizacao' => $especialidade->dataAtualizacao,
+        ];
+    }
 }
