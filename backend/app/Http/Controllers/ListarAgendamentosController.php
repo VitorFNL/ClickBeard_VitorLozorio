@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\UseCases\ListarAgendamentos\ListarAgendamentosInput;
 use App\UseCases\ListarAgendamentos\ListarAgendamentosInterface;
+use App\Infrastructure\Persistence\Mappers\AgendamentoMapper;
 use Illuminate\Http\Request;
 
 class ListarAgendamentosController extends Controller
@@ -37,10 +38,13 @@ class ListarAgendamentosController extends Controller
                 $input['especialidade'] ?? null
             ));
 
+            // Converter entidades de domínio para arrays formatados
+            $agendamentosArray = array_map([AgendamentoMapper::class, 'domainToArray'], $response->agendamentos);
+
             return response()->json([
                 'status'=> 'success',
                 'message'=> 'Agendamentos listados com sucesso',
-                'agendamentos'=> $response->agendamentos
+                'agendamentos'=> $agendamentosArray
             ], 200);
         } catch (\Exception $e) {
             return response()->json([

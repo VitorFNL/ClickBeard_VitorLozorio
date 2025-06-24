@@ -53,4 +53,38 @@ class AgendamentoMapper
 
         return $agendamento;
     }
+
+    public static function domainToArray(Agendamento $agendamento): array
+    {
+        return [
+            'id' => $agendamento->agendamentoId,
+            'usuario_id' => $agendamento->usuario->usuarioId,
+            'barbeiro_id' => $agendamento->barbeiro->barbeiroId,
+            'especialidade_id' => $agendamento->especialidade->especialidadeId,
+            'data_agendamento' => $agendamento->dataAgendamento->format('Y-m-d'),
+            'hora_inicio' => $agendamento->horaInicio->format('H:i'),
+            'hora_fim' => $agendamento->horaFim->format('H:i'),
+            'status_agendamento' => $agendamento->status->value,
+            'data_criacao' => $agendamento->dataCriacao?->format('Y-m-d H:i:s'),
+            'data_atualizacao' => $agendamento->dataAtualizacao?->format('Y-m-d H:i:s'),
+            // Relacionamentos
+            'usuario' => [
+                'id' => $agendamento->usuario->usuarioId,
+                'nome' => $agendamento->usuario->nome,
+                'email' => $agendamento->usuario->email,
+                'admin' => $agendamento->usuario->admin,
+            ],
+            'barbeiro' => [
+                'id' => $agendamento->barbeiro->barbeiroId,
+                'nome' => $agendamento->barbeiro->nome,
+                'data_nascimento' => $agendamento->barbeiro->dataNascimento->format('Y-m-d'),
+                'data_contratacao' => $agendamento->barbeiro->dataContratacao->format('Y-m-d'),
+                'ativo' => $agendamento->barbeiro->ativo,
+            ],
+            'especialidade' => [
+                'id' => $agendamento->especialidade->especialidadeId,
+                'descricao' => $agendamento->especialidade->descricao,
+            ]
+        ];
+    }
 }

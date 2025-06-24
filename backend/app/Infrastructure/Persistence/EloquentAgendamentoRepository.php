@@ -121,6 +121,23 @@ class EloquentAgendamentoRepository implements AgendamentoRepositoryInterface
     }
 
     /**
+     * @return Agendamento[]
+     */
+    public function findByUsuario(int $usuarioId): array
+    {
+        $agendamentos = EloquentAgendamento::with(['usuario', 'barbeiro.especialidades', 'especialidade'])
+                                        ->where('usuario_id', $usuarioId)
+                                        ->orderBy('data_agendamento')
+                                        ->orderBy('hora_inicio')
+                                        ->get();
+
+
+        return array_map(function ($agendamento) {
+            return $this->convertEloquentToDomain($agendamento);
+        }, $agendamentos->all());
+    }
+
+    /**
      * Converte um EloquentAgendamento para uma entidade de domínio Agendamento
      */
     private function convertEloquentToDomain($eloquentAgendamento): Agendamento

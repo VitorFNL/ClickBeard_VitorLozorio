@@ -18,6 +18,10 @@ interface AgendamentoRepositoryInterface
     /**
      * @return Agendamento[]
      */
+    public function findByUsuario(int $usuarioId): array;
+    /**
+     * @return Agendamento[]
+     */
     public function findByEspecialidade(int $especialidadeId): array;
     /**
      * @return Agendamento[]
